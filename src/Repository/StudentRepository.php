@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Student;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Doctrine\ORM\EntityManagerInterface;
 /**
  * @method Student|null find($id, $lockMode = null, $lockVersion = null)
  * @method Student|null findOneBy(array $criteria, array $orderBy = null)
@@ -14,11 +14,29 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StudentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+  private $manager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, Student::class);
+        $this->manager = $manager;
     }
 
+    public function addStudent(Student $student):Student{
+        $this->manager->persist($student);
+        $this->manager->flush();
+        return $student;
+    }
+
+    public function updateStudent(Student $student):Student{
+      $this->manager->persist($student);
+      $this->manager->flush();
+      return $student;
+    }
+
+    public function deleteStudent(Student $student){
+      $this->manager->remove($student);
+      $this->manager->flush();
+    }
     // /**
     //  * @return Student[] Returns an array of Student objects
     //  */

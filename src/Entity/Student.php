@@ -114,4 +114,14 @@ class Student
 
         return $this;
     }
+
+    //function toArray pour retourner un tableau pour la response JsonResponse
+    public function toArray(){
+      return [
+        "id" => $this->getId(),
+        "Nom" => $this->getNom(),
+        "Prenom" => $this->getPrenom(),
+        "date_annive" => $this->getDateAnnive()->format("d-m-Y")
+      ];
+    }
 }
