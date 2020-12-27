@@ -6,6 +6,7 @@ use App\Entity\Student;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Note;
 /**
  * @method Student|null find($id, $lockMode = null, $lockVersion = null)
  * @method Student|null findOneBy(array $criteria, array $orderBy = null)
@@ -32,37 +33,16 @@ class StudentRepository extends ServiceEntityRepository
       $this->manager->flush();
       return $student;
     }
-
+    // /**
+    //  * @return Student[] Returns an array of Student objects
+    //  */
     public function deleteStudent(Student $student){
       $this->manager->remove($student);
       $this->manager->flush();
     }
-    // /**
-    //  * @return Student[] Returns an array of Student objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Student
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+    public function addNoteStudent(Note $note){
+      $this->manager->persist($note);
+      $this->manager->flush();
     }
-    */
 }

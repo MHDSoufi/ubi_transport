@@ -6,6 +6,7 @@ use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=StudentRepository::class)
@@ -21,11 +22,35 @@ class Student
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank( message="Les valeurs ne peuvent pas etre vide !")
+     * @Assert\Length(
+     *            min = 3,
+     *            max = 15,
+     *            minMessage = "le nom ne peut pas contenir moin de {{ limit }} caracteres !",
+     *            maxMessage = "le nom ne peut pas contenir plus de {{ limit }} caracteres !"
+     *)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre nom ne peut contenir de chiffres !"
+     * )
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank( message="Les valeurs ne peuvent pas etre vide !")
+     * @Assert\Length(
+     *            min = 3,
+     *            max = 15,
+     *            minMessage = "le prenom ne peut pas contenir moin de {{ limit }} caracteres !",
+     *            maxMessage = "le prenom ne peut pas contenir plus de {{ limit }} caracteres !"
+     *)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Votre prenom ne peut contenir de chiffres !"
+     * )
      */
     private $prenom;
 
