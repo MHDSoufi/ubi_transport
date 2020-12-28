@@ -112,9 +112,33 @@ class StudentController extends AbstractController
     */
     public function moyen($id): JsonResponse{
       $student = $this->studentRepository->findOneBy(["id"=>$id]);
-      $notes = $student->getNotes();
-      $moyene = $this->calculeMoyene($notes);
-      return  new JsonResponse(['moyene'=>"la moyene de l'etudiant ". $student->getNom() . ' '. $student->getPrenom().' ' .$moyene], Response::HTTP_OK);
+      if (isset($student)) {
+        $notes = $student->getNotes();
+        $moyene = $this->calculeMoyene($notes);
+        return  new JsonResponse(['moyene'=>"la moyene de l'etudiant ". $student->getNom() . ' '. $student->getPrenom().' ' .$moyene], Response::HTTP_OK);
+      }else{
+        return new JsonResponse(['error'=> "Cette etudiant n'existe pas !"], Response::HTTP_NOT_FOUND);
+      }
+
+    }
+
+    /**
+    * @Route("/general", name="general_moyene", methods={"GET"})
+    *
+    */
+    public function moyeneGeneral(): JsonResponse{
+      $students = $this->studentRepository->findAll();
+      $moyene = [];
+      $nbrStudent = 0;
+      foreach ($students as $student) {
+        $notes = $student->getNotes();
+        if (count($notes) > 0) {
+          $nbrStudent += 1;
+          array_push($moyene, $this->calculeMoyene($notes));
+        }
+      }
+      $moyeneGenerale = array_sum($moyene)/$nbrStudent;
+      return  new JsonResponse(['moyene_classe'=>"la moyene de la classe est ".$moyeneGenerale], Response::HTTP_OK);
     }
 
     //function de calcule de moyene
